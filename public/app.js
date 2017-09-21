@@ -7,7 +7,7 @@ app.controller('mainController', ['$http', function($http) {
     this.editProvider = true;
 
     this.URL = 'http://localhost:3000' || process.env.HEROKU_LINK;
-    // this.URL = 'https://gizmo-blogger-backend.herokuapp.com';
+    // this.URL = 'https://frozen-badlands-77854.herokuapp.com/;
     this.formData = {};
     const controller = this;
     const edit_form = false;
