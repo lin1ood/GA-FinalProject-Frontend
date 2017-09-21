@@ -19,28 +19,29 @@
 
 
     <h2>Welcome to the Service Provider Registry</h2>
-    <!-- <h3>Register for a user/password</h3>
+    <h3>Providers must register for a user/password</h3>
     <p>First, you will need to register for a user account if you have not already.  Once you create your account you can complete your provider information and submit.</p>
     <p>You will be loged in as part of your registration.</p>
     <form id="registration" ng-submit="ctrl.register(userRegister)">
       Username: <input type="text" ng-model="userRegister.username" placeholder="username"/><br/>
       Password: <input type="password" ng-model="userRegister.password" placeholder="password"/><br/>
+      Email: <input type="email" ng-model="userRegister.email" placeholder="me@gmail.com"/><br/>
       <input type="submit" value="Register"/>
     </form>
 
     <hr/>
- -->
+
     <h3>Register your service here:</h3>
-    <p>Enter your provider information, there will be a vetting process prior to you being listed as a provider on this site.  A SMS text message will be sent confirming your acceptance as a service provider for this site.</p>
+    <p>After registering your user/password/email, complete your service registration by entering your provider information, there will be a vetting process prior to you being listed as a provider on this site.  A SMS text message will be sent confirming your acceptance as a service provider for this site.</p>
     <p>If you need to register multiple services simply select a different service from the 'Service:' drop down and press submit again for each additional service provider role.</p>
 
-    <form id="registration" ng-submit="ctrl.register(userRegister, providerData)">
+    <form id="registration" ng-submit="ctrl.providerReg(providerData)">
     <!-- <form id="provider"> -->
-      Username: <input type="text" ng-model="userRegister.username" placeholder="username"/><br/>
+      <!-- Username: <input type="text" ng-model="userRegister.username" placeholder="username"/><br/>
       Password: <input type="password" ng-model="userRegister.password" placeholder="password"/><br/>
-      Email: <input type="email" ng-model="userRegister.email" placeholder="me@gmail.com"/><br/>
-      Service: <select ng-model="ctrl.selectedSer">
-        <option id="labelthis" ng-repeat="x in ctrl.services">{{x}}</option><br/>
+      Email: <input type="email" ng-model="userRegister.email" placeholder="me@gmail.com"/><br/> -->
+      Service: <select ng-model="providerData.category">
+      <option id="labelthis" ng-repeat="x in ctrl.services">{{x}}</option><br/>
       </select><br/>
       Operator Name: <input ng-model="providerData.name" type="text"  placeholder="operator name"><br/>
 
@@ -51,6 +52,7 @@
       <input type="submit" value="Service Register"/>
     </form>
 
+    <hr>
 
     <h2>Login to update your Provider Information</h2>
     <p>If you already have a login/profile you can login to edit your provider information here</p>
@@ -59,6 +61,33 @@
       <input type="password" ng-model="userLogin.password" placeholder="password"/>
       <input type="submit" value="Login"/>
     </form>
+
+    <h2>Update or Delete your Service Registration</h2>
+    <!--  List services associated with this user -->
+    <!-- <button ng-click=ctrl.ownerServices()>List My Services</button> -->
+    <ul ng-show="ctrl.user_data" ng-repeat="service in ctrl.providers">
+      <li>{{service.category}}</li>
+      <button ng-click="ctrl.delService(service)">Delete</button>
+      <button ng-click="ctrl.editProvider = true">Edit</button>
+    <form ng-show="ctrl.editProvider" id="registration" ng-submit="ctrl.providerEdit(service)">
+    <!-- <form id="provider"> -->
+      <!-- Username: <input type="text" ng-model="userRegister.username" placeholder="username"/><br/>
+      Password: <input type="password" ng-model="userRegister.password" placeholder="password"/><br/>
+      Email: <input type="email" ng-model="userRegister.email" placeholder="me@gmail.com"/><br/> -->
+      Service: <select ng-model="service.category">
+      <option id="labelthis" ng-repeat="x in ctrl.services" placeholder="{{service.category}}">{{x}}</option><br/>
+      </select><br/>
+      Operator Name: <input ng-model="service.name" type="text"  placeholder="{{service.name}}"><br/>
+
+      Company: <input ng-model="service.company" type="text"  placeholder="{{service.company}}"><br/>
+      Cell Phone: <input ng-model="service.cell_phone" type="tel"  placeholder="{{service.cell_phone}}"><br/>
+      Address: <input ng-model="service.address" type="text"  placeholder="{{service.address}}"><br/>
+      URL: <input ng-model="service.url" type="url"  placeholder="{{service.url}}"><br/>
+      <input type="submit" value="Update this Service"/>
+    </form>
+  </ul>
+
+
 
   </body>
 </html>

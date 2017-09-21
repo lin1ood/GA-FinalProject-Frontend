@@ -21,6 +21,11 @@
         </nav>
     </header>
     {{ctrl.message}}<br/>
+    <ul ng-repeat="service in ctrl.providers">
+      <li>{{service.category}} owner:{{service.name}} Cell:{{service.cell_phone}}</li>
+      <!-- <button ng-click=ctrl.delService(service)>Comment</button> -->
+    </ul>
+
     <a href="../views/register.html">Service Provider Profile</a><br/>
     <div class="container" id="map"></div>
     <br/>

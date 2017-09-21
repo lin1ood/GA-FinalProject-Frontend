@@ -2,7 +2,9 @@ const app = angular.module('service_app', []);
 app.controller('mainController', ['$http', function($http) {
 
     this.message= "Hello from ANGULAR!"
-    this.blogs = [];
+    this.providers = [];
+    this.user_data;
+    this.editProvider = true;
 
     this.URL = 'http://localhost:3000' || process.env.HEROKU_LINK;
     // this.URL = 'https://gizmo-blogger-backend.herokuapp.com';
@@ -12,6 +14,73 @@ app.controller('mainController', ['$http', function($http) {
     this.services = ["Electrician","Plumber","Roofer","Child    Care","Baby Sitter","HVAC","Carpenter","Building Contractor"]
 
     // localStorage.clear('token');
+
+    this.ownerServices = function() {
+      // console.log('--- ownerServices --- userid = ', this.user_data.user.id)
+      $http({
+        method: 'GET',
+        url: this.URL + '/providers'
+      }).then(function(result) {
+          console.log('providers from : ', result);
+          this.providers = result.data;
+          this.editProvider = false;
+      }.bind(this), function(error) {
+          console.log(error);
+      });
+    }
+
+    this.delService = function(service) {
+      console.log('service_id', service.id);
+      $http({
+        method: 'DELETE',
+        url: this.URL + '/providers/' + service.id,
+        headers: {
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+        }
+      }).then(
+        function(response){
+          console.log('delete response ', response);
+          // controller.getBlogs();
+          this.ownerServices();
+        }.bind(this),
+        function (error){
+          console.log(error);
+        }
+      );
+      // this.controller.getBlogs();
+    }
+
+    this.providerEdit = function (service) {
+      console.log('Edit Service called!')
+      console.log('service.id ', service.id)
+      // this.editProvider = true;
+      // console.log('blog.author ', blog.author)
+      // console.log('blog.subject ', blog.subject)
+      // console.log('blog.content ', blog.content)
+      // console.log('blog.user_id ', blog.user_id)
+      //
+      // console.log('this.editForm.author ', this.editForm.author)
+      // console.log('this.editForm.subject ', this.editForm.subject)
+      // console.log('this.editForm.author ', this.editForm.content)
+
+      $http({
+        method: 'PUT',
+        url: this.URL + '/providers/' + service.id,
+        data: service,
+        headers: {
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+        }
+      }).then(function(response){
+          console.log(response.data)
+          // this.blogs = response.data;
+          this.ownerServices();
+        }, function(error) {
+            console.log(error);
+        });
+
+      // hide the form
+      controller.edit_form = false;
+    };
 
 
     // Login User to get JWT Token for
@@ -25,9 +94,11 @@ app.controller('mainController', ['$http', function($http) {
           data: { username: userLogin.username, password: userLogin.password },
         }).then(function(response) {
           console.log(response);
-          this.user = response.data.user;
+          this.user_data = response.data;
           localStorage.setItem('token', JSON.stringify(response.data.token));
-        }.bind(this));
+        }.bind(this), function(error) {
+          console.log(error);
+        });
     }
 
         //Logout current user and delete JWT Token
@@ -36,14 +107,35 @@ app.controller('mainController', ['$http', function($http) {
           location.reload();
         }
 
-
     this.providerReg = function(providerData) {
       console.log('ProviderReg called with : ', providerData);
+      console.log('user_data = ', this.user_data.user.id);
+      $http({
+          method: 'POST',
+          url: this.URL + '/providers',
+          data: {
+            name: providerData.name,
+            category: providerData.category,
+            cell_phone: providerData.cell_phone,
+            company: providerData.company,
+            address: providerData.address,
+            url: providerData.url,
+            user_id: this.user_data.user.id,
+            vetted: false,
+            available: false
+          },
+          headers: {
+            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+          }
+        }).then(function(response) {
+          console.log(response);
+        }.bind(this));
     }
 
     this.register = function(userRegister, providerData) {
-      console.log('The userRegister.username & userRegister.password ' + userRegister.username + ' : ' + userRegister.password)
+      console.log('The userRegister.username & userRegister.password & userRegister.email ' + userRegister.username + ' : ' + userRegister.password + ' : ' + userRegister.email)
       this.userRegister = userRegister;
+      console.log('providerData = ', providerData);
       $http({
           method: 'POST',
           url: this.URL + '/users',
@@ -54,19 +146,20 @@ app.controller('mainController', ['$http', function($http) {
           },
         }).then(function(response) {
           console.log(response);
-          this.user = response.data.user;
+          console.log('response.data.id = ', response.data.id);
+          this.user_data = response.data;
+          console.log('user_ = ', this.user_data.id);
           localStorage.setItem('token', JSON.stringify(response.data.token));
+          this.login(userRegister);
+          //  this.providerReg(providerData);
         }.bind(this));
-        this.providerReg(providerData);
-        this.login(userRegister);
-        userRegister = null;
         var form = document.getElementById("registration");
         form.reset();
     }
 
-    this.providerReg = function(providerData){
-      console.log('This is the providerData: ', providerData);
-    }
+    // this.providerReg = function(providerData){
+    //   console.log('This is the providerData: ', providerData);
+    // }
 
 //     //read all the Blogs -- /blogs GET index
 //     //anyone can do this!!!
@@ -196,5 +289,5 @@ app.controller('mainController', ['$http', function($http) {
 //
 //
 //     // show the index of all the blogs on the initial page
-// //    this.getBlogs();
+    this.ownerServices();
   }]);
