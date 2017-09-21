@@ -6,8 +6,7 @@ app.controller('mainController', ['$http', function($http) {
     this.user_data;
     this.editProvider = true;
 
-    this.URL = 'http://localhost:3000' || process.env.HEROKU_LINK;
-    // this.URL = 'https://frozen-badlands-77854.herokuapp.com/; 
+    this.URL = ['http://localhost:3000','https://frozen-badlands-77854.herokuapp.com/'];
     this.formData = {};
     const controller = this;
     const edit_form = false;
@@ -132,10 +131,9 @@ app.controller('mainController', ['$http', function($http) {
         }.bind(this));
     }
 
-    this.register = function(userRegister, providerData) {
+    this.register = function(userRegister) {
       console.log('The userRegister.username & userRegister.password & userRegister.email ' + userRegister.username + ' : ' + userRegister.password + ' : ' + userRegister.email)
       this.userRegister = userRegister;
-      console.log('providerData = ', providerData);
       $http({
           method: 'POST',
           url: this.URL + '/users',
