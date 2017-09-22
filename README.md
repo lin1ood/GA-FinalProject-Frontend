@@ -62,9 +62,11 @@ Registered providers will be vetted by the site and their Service will now be ma
 2. Guarded programming.
    * Close all the errors for bad data entry.
    * Restrict usernames to be unique.
-3. 
+3.
 
 
 ## GitHub Project Links
+https://github.com/lin1ood/GA-FinalProject-Frontend
 
 ## Heroku Deployment Link
+https://arcane-castle-33802.herokuapp.com/
