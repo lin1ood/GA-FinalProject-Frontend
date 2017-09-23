@@ -23,7 +23,13 @@
     {{ctrl.message}}<br/>
     <ul ng-repeat="service in ctrl.providers">
       <li>{{service.category}} owner:{{service.name}} Cell:{{service.cell_phone}}</li>
-      <!-- <button ng-click=ctrl.delService(service)>Comment</button> -->
+      <button ng-click="commentBtn = true">Comment</button>
+      <p ng-show="commentBtn">Please leave your comments here for {{service.name}}</p>
+      <form id="comment" ng-show="commentBtn" ng-submit="commentBtn = false; ctrl.comment(service, userComment)">
+        Comments: <textarea ng-model="ctrl.userComment" name="comments" id="comments" cols="50" rows="3"></textarea>
+        <input type="submit" value="submit" />
+      </form>
+
     </ul>
 
     <a href="../views/register.html">Service Provider Profile</a><br/>
