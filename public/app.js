@@ -15,6 +15,26 @@ app.controller('mainController', ['$http', function($http, $window) {
 
     // localStorage.clear('token');
 
+    //Comment.where(:provider_id => 5)
+
+      this.showComments = function(service_id) {
+        this.comments = [];
+        // commentBtn = false;
+        console.log('showComments service_id : ', service_id);
+        $http({
+          method: 'POST',
+          url: this.URL + '/comments/providerId',
+          data: {
+            id: service_id
+          },
+        }).then(function(result) {
+            this.comments = result.data;
+        }.bind(this), function(error) {
+            console.log(error);
+        });
+      }
+
+
     // POST   /comments
     this.comment = function(service, userComment){
       console.log('service.id = ', service.id);

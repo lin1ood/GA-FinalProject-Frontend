@@ -22,7 +22,17 @@
     </header>
     {{ctrl.message}}<br/>
     <ul ng-repeat="service in ctrl.providers">
+
+word-{{service.id}}
+
       <li>{{service.category}} owner:{{service.name}} Cell:{{service.cell_phone}}</li>
+
+      <button ng-click="commentShow = true; ctrl.showComments(service.id)">Show Comments on this Service</button>
+      <ul ng-show="commentShow" ng-repeat="remarks in ctrl.comments">
+        <li>{{remarks.review}}</li>
+      </ul>
+
+      
       <button ng-click="commentBtn = true">Comment</button>
       <p ng-show="commentBtn">Please leave your comments here for {{service.name}}</p>
       <form id="comment" ng-show="commentBtn" ng-submit="commentBtn = false; ctrl.comment(service, userComment)">
