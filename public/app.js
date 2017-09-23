@@ -18,9 +18,14 @@ app.controller('mainController', ['$http', function($http, $window) {
     //Comment.where(:provider_id => 5)
 
       this.showComments = function(service_id) {
-        this.comments = [];
-        // commentBtn = false;
+        console.log('comments.length : ', comments.length);
         console.log('showComments service_id : ', service_id);
+        // for ( let i = 0; i < comments.length; i++) {
+        //   console.log('ul-i : ', "ul-"+i);
+        //   console.log(document.getElementById("#ul-"+i))
+        //   // document.getElementById("ul-"+i).style.display = "none";
+        // }
+
         $http({
           method: 'POST',
           url: this.URL + '/comments/providerId',
@@ -33,6 +38,20 @@ app.controller('mainController', ['$http', function($http, $window) {
             console.log(error);
         });
       }
+
+      //GET index
+      this.commentIndex = function() {
+        $http({
+          method: 'GET',
+          url: this.URL + '/comments'
+        }).then(function(result) {
+            console.log('list of comments : ', result.data);
+            this.comments = result.data;
+        }.bind(this), function(error) {
+            console.log(error);
+        });
+      }
+
 
 
     // POST   /comments
@@ -352,4 +371,5 @@ app.controller('mainController', ['$http', function($http, $window) {
 //
 //     // show the index of all the blogs on the initial page
     this.servicesIndex();
+    this.commentIndex();
   }]);

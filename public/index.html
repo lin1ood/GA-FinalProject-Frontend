@@ -21,25 +21,25 @@
         </nav>
     </header>
     {{ctrl.message}}<br/>
-    <ul ng-repeat="service in ctrl.providers">
+    <ul ng-repeat="provider in ctrl.providers">
 
-word-{{service.id}}
+word-{{provider.id}}
 
-      <li>{{service.category}} owner:{{service.name}} Cell:{{service.cell_phone}}</li>
+      <li>{{provider.category}} owner:{{provider.name}} Cell:{{provider.cell_phone}}</li>
 
-      <button ng-click="commentShow = true; ctrl.showComments(service.id)">Show Comments on this Service</button>
-      <ul ng-show="commentShow" ng-repeat="remarks in ctrl.comments">
+      <br/><button ng-click="commentShow = !commentShow; ctrl.showComments(provider.id)">Show Comments on this Service</button>
+      <ul id="ul-{{provider.id}}" ng-show="commentShow" ng-repeat="remarks in ctrl.comments | filter : provider.id">
         <li>{{remarks.review}}</li>
       </ul>
 
-      
+
       <button ng-click="commentBtn = true">Comment</button>
-      <p ng-show="commentBtn">Please leave your comments here for {{service.name}}</p>
-      <form id="comment" ng-show="commentBtn" ng-submit="commentBtn = false; ctrl.comment(service, userComment)">
+      <p ng-show="commentBtn">Please leave your comments here for {{provider.name}}</p>
+      <form id="comment" ng-show="commentBtn" ng-submit="commentBtn = false; ctrl.comment(provider, userComment)">
         Comments: <textarea ng-model="ctrl.userComment" name="comments" id="comments" cols="50" rows="3"></textarea>
         <input type="submit" value="submit" />
       </form>
-
+<hr/>
     </ul>
 
     <a href="../views/register.html">Service Provider Profile</a><br/>
