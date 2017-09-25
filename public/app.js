@@ -5,6 +5,7 @@ app.controller('mainController', ['$http', function($http, $window) {
     this.providers = [];
     this.user_data;
     this.editProvider = true;
+    this.comments;
 
     this.URL = 'http://localhost:3000' || process.env.HEROKU_LINK;
     // this.URL = 'https://frozen-badlands-77854.herokuapp.com/';
