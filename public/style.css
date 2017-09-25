@@ -7,23 +7,28 @@ header{
 }
 
 #top-nav{
+  width: 100%;
   border: 2px solid green;
   display: grid;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 10px, auto;
-  /*position: fixed;*/
+  grid-template-rows: 20px, auto;
+  position: fixed;
 
 }
-#nav
+#header-ul #header-li {
+  display: inline;
+  /*margin-right: 10px;*/
+}
+/*nav
  {
  background-color:lightgreen;
  width:auto;
  height:25px;
- /*box-shadow: 0px 1px 50px #5E5E5E;*/
+ box-shadow: 0px 1px 50px #5E5E5E;
  position:fixed;
  top:30px;
  border: 2px solid blue;
-}
+}*/
 
 .container {
   width: 50%;

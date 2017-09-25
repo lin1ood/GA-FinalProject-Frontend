@@ -12,18 +12,67 @@
   <body ng-controller="mainController as ctrl">
       <header>
         <nav id="top-nav">
-          <ul>
-            <li>I need help now!!!</li>
+          <ul id="header-ul">
+            <li id="header-li">I need a service now!!!</li>
           </ul>
-          <ul>
-           <li><a href="../views/register.html">Provider Registration</a></li>
+          <ul id="header-ul">
+           <li id="header-li"><a href="../views/register.html">Provider Registration</a></li>
          </ul>
         </nav>
     </header>
-    {{ctrl.message}}<br/>
-    <ul ng-repeat="service in ctrl.providers">
-      <li>{{service.category}} owner:{{service.name}} Cell:{{service.cell_phone}}</li>
-      <!-- <button ng-click=ctrl.delService(service)>Comment</button> -->
+    <!-- {{ctrl.message}}<br/> -->
+    <!-- <h2>Electrician</h2>
+    <table style="width:100%">
+      <tr>
+        <th>Company</th>
+        <th>Owner</th>
+        <th>Cell Number</th>
+      </tr>
+      <tr ng-repeat="provider in ctrl.providers | filter: { category: 'Electrician' }">
+        <td>{{provider.company}}</td>
+        <td>{{provider.name}}</td>
+        <td>{{provider.cell_phone}}</td>
+        {{provider}}
+      </tr>
+      <tr>
+        <td>
+          Hello!!
+          {{provider.id}}
+          <button ng-click="commentShow = !commentShow; ctrl.showComments(provider.id)">Show/Hide Comments on this Service</button>
+          <ul ng-show="commentShow" ng-repeat="remarks in ctrl.comments | filter : provider.id">
+            <li>{{remarks.review}}</li>
+          </ul>
+        </td>
+        <td>
+        </td>
+      </tr>
+
+    </table> -->
+
+
+<hr>
+
+    <!-- <ul ng-repeat="provider in ctrl.providers | filter: { user_id: 3 }"> -->
+    <!-- <ul ng-repeat="provider in ctrl.providers | filter: { category: 'Electrician' }"> -->
+    <ul ng-repeat="provider in ctrl.providers">
+
+<!-- word-{{provider.id}} -->
+
+      <li>{{provider.category}} owner:{{provider.name}} Cell:{{provider.cell_phone}}</li>
+
+      <br/><button ng-click="commentShow = !commentShow; ctrl.showComments(provider.id)">Show/Hide Comments on this Service</button>
+      <ul id="ul-{{provider.id}}" ng-show="commentShow" ng-repeat="remarks in ctrl.comments | filter : provider.id">
+        <li>{{remarks.review}}</li>
+      </ul>
+
+
+      <button ng-click="commentBtn = true">Comment</button>
+      <p ng-show="commentBtn">Please leave your comments here for {{provider.name}}</p>
+      <form id="comment" ng-show="commentBtn" ng-submit="commentBtn = false; ctrl.comment(provider, userComment)">
+        Comments: <textarea ng-model="ctrl.userComment" name="comments" id="comments" cols="50" rows="3"></textarea>
+        <input type="submit" value="submit" />
+      </form>
+<hr/>
     </ul>
 
     <a href="../views/register.html">Service Provider Profile</a><br/>

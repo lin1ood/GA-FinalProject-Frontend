@@ -1,13 +1,14 @@
 const app = angular.module('service_app', []);
-app.controller('mainController', ['$http', function($http) {
+app.controller('mainController', ['$http', function($http, $window) {
 
     this.message= "Hello from ANGULAR!"
     this.providers = [];
     this.user_data;
     this.editProvider = true;
+    this.comments;
 
     // this.URL = 'http://localhost:3000' || process.env.HEROKU_LINK;
-    this.URL = 'https://frozen-badlands-77854.herokuapp.com/;
+    this.URL = 'https://frozen-badlands-77854.herokuapp.com/';
     this.formData = {};
     const controller = this;
     const edit_form = false;
@@ -15,13 +16,102 @@ app.controller('mainController', ['$http', function($http) {
 
     // localStorage.clear('token');
 
-    this.ownerServices = function() {
+    //Comment.where(:provider_id => 5)
+
+      this.showComments = function(service_id) {
+        console.log('comments.length : ', comments.length);
+        console.log('showComments service_id : ', service_id);
+        // for ( let i = 0; i < comments.length; i++) {
+        //   console.log('ul-i : ', "ul-"+i);
+        //   console.log(document.getElementById("#ul-"+i))
+        //   // document.getElementById("ul-"+i).style.display = "none";
+        // }
+
+        $http({
+          method: 'POST',
+          url: this.URL + '/comments/providerId',
+          data: {
+            id: service_id
+          },
+        }).then(function(result) {
+            this.comments = result.data;
+        }.bind(this), function(error) {
+            console.log(error);
+        });
+      }
+
+      //GET index
+      this.commentIndex = function() {
+        $http({
+          method: 'GET',
+          url: this.URL + '/comments'
+        }).then(function(result) {
+            console.log('list of comments : ', result.data);
+            this.comments = result.data;
+        }.bind(this), function(error) {
+            console.log(error);
+        });
+      }
+
+
+
+    // POST   /comments
+    this.comment = function(service, userComment){
+      console.log('service.id = ', service.id);
+      console.log('comment = ', this.userComment);
+
+      // if empty or blank comment
+      // don't store it
+      if (this.userComment != undefined && this.userComment != "") {
+        console.log('in the if');
+        $http({
+          method: 'POST',
+          url: this.URL + '/comments',
+          data: {
+            provider_id: service.id,
+            review: this.userComment,
+            rank: 5
+          },
+        }).then(function(result) {
+            console.log('comment result : ', result);
+            this.userComment = "";
+        }, function(error) {
+            console.log(error);
+        });
+      }
+    }
+
+    // Render Provider records by user_id that is logged in
+    // This will allow only the users that created the Provider
+    // records to update or delete them.
+    this.servicesByOwner = function(user_id) {
+      console.log('--- services ByOwner --- userid = ', user_id)
+      this.providers.empty;
+      $http({
+        method: 'POST',
+        url: this.URL + '/providers/userId',
+        data: {
+          id: user_id
+        },
+        headers: {
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+        },
+      }).then(function(result) {
+          console.log('providers from : ', result);
+          this.providers = result.data;
+          this.editProvider = false;
+      }.bind(this), function(error) {
+          console.log(error);
+      });
+    }
+
+
+    this.servicesIndex = function() {
       // console.log('--- ownerServices --- userid = ', this.user_data.user.id)
       $http({
         method: 'GET',
         url: this.URL + '/providers'
       }).then(function(result) {
-          console.log('providers from : ', result);
           this.providers = result.data;
           this.editProvider = false;
       }.bind(this), function(error) {
@@ -34,6 +124,10 @@ app.controller('mainController', ['$http', function($http) {
       $http({
         method: 'DELETE',
         url: this.URL + '/providers/' + service.id,
+        data: {
+          id: this.user_data.user.id,
+          item: service.id
+        },
         headers: {
           Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
         }
@@ -41,28 +135,17 @@ app.controller('mainController', ['$http', function($http) {
         function(response){
           console.log('delete response ', response);
           // controller.getBlogs();
-          this.ownerServices();
+          this.servicesByOwner(this.user_data.user.id);
         }.bind(this),
         function (error){
           console.log(error);
         }
       );
-      // this.controller.getBlogs();
     }
 
     this.providerEdit = function (service) {
       console.log('Edit Service called!')
       console.log('service.id ', service.id)
-      // this.editProvider = true;
-      // console.log('blog.author ', blog.author)
-      // console.log('blog.subject ', blog.subject)
-      // console.log('blog.content ', blog.content)
-      // console.log('blog.user_id ', blog.user_id)
-      //
-      // console.log('this.editForm.author ', this.editForm.author)
-      // console.log('this.editForm.subject ', this.editForm.subject)
-      // console.log('this.editForm.author ', this.editForm.content)
-
       $http({
         method: 'PUT',
         url: this.URL + '/providers/' + service.id,
@@ -73,7 +156,7 @@ app.controller('mainController', ['$http', function($http) {
       }).then(function(response){
           console.log(response.data)
           // this.blogs = response.data;
-          this.ownerServices();
+          this.servicesByOwner(this.user_data.user.id);
         }, function(error) {
             console.log(error);
         });
@@ -96,16 +179,17 @@ app.controller('mainController', ['$http', function($http) {
           console.log(response);
           this.user_data = response.data;
           localStorage.setItem('token', JSON.stringify(response.data.token));
+          this.servicesByOwner(response.data.user.id)
         }.bind(this), function(error) {
-          console.log(error);
+        console.log(error);
         });
     }
 
-        //Logout current user and delete JWT Token
-        this.logout = function() {
-          localStorage.clear('token');
-          location.reload();
-        }
+    //Logout current user and delete JWT Token
+    this.logout = function() {
+      localStorage.clear('token');
+      location.reload();
+    }
 
     this.providerReg = function(providerData) {
       console.log('ProviderReg called with : ', providerData);
@@ -132,10 +216,9 @@ app.controller('mainController', ['$http', function($http) {
         }.bind(this));
     }
 
-    this.register = function(userRegister, providerData) {
+    this.register = function(userRegister) {
       console.log('The userRegister.username & userRegister.password & userRegister.email ' + userRegister.username + ' : ' + userRegister.password + ' : ' + userRegister.email)
       this.userRegister = userRegister;
-      console.log('providerData = ', providerData);
       $http({
           method: 'POST',
           url: this.URL + '/users',
@@ -146,12 +229,11 @@ app.controller('mainController', ['$http', function($http) {
           },
         }).then(function(response) {
           console.log(response);
-          console.log('response.data.id = ', response.data.id);
-          this.user_data = response.data;
-          console.log('user_ = ', this.user_data.id);
-          localStorage.setItem('token', JSON.stringify(response.data.token));
+          // console.log('response.data.id = ', response.data.id);
+          // this.user_data = response.data;
+          // console.log('user_ = ', this.user_data.id);
+          // localStorage.setItem('token', JSON.stringify(response.data.token));
           this.login(userRegister);
-          //  this.providerReg(providerData);
         }.bind(this));
         var form = document.getElementById("registration");
         form.reset();
@@ -289,5 +371,6 @@ app.controller('mainController', ['$http', function($http) {
 //
 //
 //     // show the index of all the blogs on the initial page
-    this.ownerServices();
+    this.servicesIndex();
+    this.commentIndex();
   }]);
