@@ -9,17 +9,25 @@
     <title>Register</title>
   </head>
   <body ng-controller="mainController as ctrl">
-    <header>
-      <nav id="top-nav">
-        <ul>
-         <li><a ng-click="ctrl.logout()" href="#" id="logout">Log Out</a></li>
-         <li><a href="javascript:history.back()">Back</a></li>
-       </ul>
-      </nav>
-  </header>
+    <div class="grid">
+      <div class="title">
+        <h3>Welcome to the Service Provider Registry</h3>
+      </div>
+      <div class="links">
+
+        <header>
+          <nav id="top-nav">
+            <ul>
+             <li><a ng-click="ctrl.logout()" href="#" id="logout">Log Out</a></li>
+             <li><a href="javascript:history.back()">Back</a></li>
+           </ul>
+          </nav>
+      </header>
+    </div>
 
 
-    <h2>Welcome to the Service Provider Registry</h2>
+    <div class="listing">
+
     <h3>Providers must register for a user/password</h3>
     <p>First, you will need to register for a user account if you have not already.  Once you create your account you can complete your provider information and submit.</p>
     <p>You will be logged in as part of your registration.</p>
@@ -31,6 +39,7 @@
     </form>
 
     <hr/>
+<div>
 
     <h3>Register your service here:</h3>
     <p>After registering your user/password/email, complete your service registration by entering your provider information. There will be a vetting process prior to your Service being listed as a provider on this site.  A SMS text message will be sent confirming your acceptance as a service provider for this site.</p>
@@ -52,6 +61,7 @@
       URL: <input ng-model="providerData.url" type="url"  placeholder="https://www.rotorooter.com/austin/"><br/>
       <input type="submit" value="Service Register"/>
     </form>
+  </div>
 
     <hr>
 
@@ -62,6 +72,7 @@
       <input type="password" ng-model="userLogin.password" placeholder="password"/>
       <input type="submit" value="Login"/>
     </form>
+<div>
 
     <h2>Update or Delete your Service Registration</h2>
     <!--  List services associated with this user -->
@@ -87,6 +98,11 @@
       <input type="submit" value="Update this Service"/>
     </form>
   </ul>
+</div>
+  
+</div>
+
+</div>
 
 
 
