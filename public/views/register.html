@@ -12,7 +12,7 @@
     <header>
       <nav id="top-nav">
         <ul>
-         <li><a ng-click="ctrl.logout()" href="#" id="logout">Logout</a></li>
+         <li><a ng-click="ctrl.logout()" href="#" id="logout">Log Out</a></li>
          <li><a href="javascript:history.back()">Back</a></li>
        </ul>
       </nav>
@@ -22,7 +22,7 @@
     <h2>Welcome to the Service Provider Registry</h2>
     <h3>Providers must register for a user/password</h3>
     <p>First, you will need to register for a user account if you have not already.  Once you create your account you can complete your provider information and submit.</p>
-    <p>You will be loged in as part of your registration.</p>
+    <p>You will be logged in as part of your registration.</p>
     <form id="registration" ng-submit="ctrl.register(userRegister)">
       Username: <input type="text" ng-model="userRegister.username" placeholder="username"/><br/>
       Password: <input type="password" ng-model="userRegister.password" placeholder="password"/><br/>
@@ -33,7 +33,7 @@
     <hr/>
 
     <h3>Register your service here:</h3>
-    <p>After registering your user/password/email, complete your service registration by entering your provider information, there will be a vetting process prior to you being listed as a provider on this site.  A SMS text message will be sent confirming your acceptance as a service provider for this site.</p>
+    <p>After registering your user/password/email, complete your service registration by entering your provider information. There will be a vetting process prior to your Service being listed as a provider on this site.  A SMS text message will be sent confirming your acceptance as a service provider for this site.</p>
     <p>If you need to register multiple services simply select a different service from the 'Service:' drop down and press submit again for each additional service provider role.</p>
 
     <form id="registration" ng-submit="ctrl.providerReg(providerData)">
@@ -56,7 +56,7 @@
     <hr>
 
     <h2>Login to update your Provider Information</h2>
-    <p>If you already have a login/profile you can login to edit your provider information here. Your Provider records will not display once you are logout.</p>
+    <p>If you already have a login/profile you can login to edit your provider information here. Your Provider records will not display once you log out.</p>
     <form ng-submit="ctrl.login(userLogin)">
       <input type="text" ng-model="userLogin.username" placeholder="username"/>
       <input type="password" ng-model="userLogin.password" placeholder="password"/>
