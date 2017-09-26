@@ -7,12 +7,12 @@ app.controller('mainController', ['$http', function($http, $window) {
     this.editProvider = true;
     this.comments;
 
-    // this.URL = 'http://localhost:3000' || process.env.HEROKU_LINK;
-    this.URL = 'https://frozen-badlands-77854.herokuapp.com/';
+    this.URL = 'http://localhost:3000' || process.env.HEROKU_LINK;
+    // this.URL = 'https://frozen-badlands-77854.herokuapp.com/';
     this.formData = {};
     const controller = this;
     const edit_form = false;
-    this.services = ["Electrician","Plumber","Roofer","Child    Care","Baby Sitter","HVAC","Carpenter","Building Contractor"]
+    this.services = ["Electrician","Plumber","Roofer","Child Care","Babby Sitter","HVAC","Carpenter","Building Contractor", "Handy Man"]
 
     // localStorage.clear('token');
 

@@ -1,24 +1,92 @@
-header{
-  /*background-color: black;*/
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto 1fr;
+  grid-template-areas:
+  "title title title title"
+  "links links links links"
+  "listing listing listing listing"
+  "footer footer footer footer";
+  grid-row-gap: 1em;
+}
+
+.title{
+  grid-area: title;
+  /*grid-column: 1 / 3;*/
+  display: grid;
+  grid-template-columns: 60% 40%;
+  height: 50px;
+  font-size: 20px;
+}
+
+.links {
+  grid-area: links;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20% 20%;
+  height: 100px;
+  font-size: .75em;
+  margin: 0;
+}
+
+.listing{
+  grid-area: listing;
+}
+
+.footer {
+  grid-area: footer;
+  text-align: center;
+}
+
+.grid div:nth-child(odd){
+  background-color: ivory;
+}
+
+.grid div:nth-child(even){
+  background-color: lightgray;
+}
+
+#servicePic {
+  width: 100px;
+  height: 50px;
+}
+
+
+/*header{
+  background-color: lightblue;
   width: 100%;
   height: 100px;
   border: 2px solid purple;
-
 }
+
 
 #top-nav{
   width: 100%;
   border: 2px solid green;
   display: grid;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 20px, auto;
-  position: fixed;
+}*/
 
+ul li {
+  list-style: none;
 }
-#header-ul #header-li {
-  display: inline;
-  /*margin-right: 10px;*/
+
+/*#bot-nav{
+  background-color: yellow;
+  font-size: .75em;
+  color: blue;
+  width: 100%;
+  height: 100px;
+  margin-top: 50px;
+  border: 2px solid green;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 20px;
 }
+
+#first-list{
+  top: 500px;
+}*/
+
 /*nav
  {
  background-color:lightgreen;
@@ -48,7 +116,9 @@ header{
     /*position:sticky;*/
 }
 
-footer{
+/*footer{
+  width: 100%;
+  display: inline-block;
   text-align: center;
   background-color: ivory;
-}
+}*/
